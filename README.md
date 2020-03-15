@@ -1,3 +1,20 @@
+# Installation
+
+```Javascript
+npm install hamjest-sinon --save-dev
+```
+
+# Usage
+
+Add the sinon matcher to hamjest by require the module
+```Javascript
+const __ = require('hamjest');
+require('hamjest');
+
+// use matcher from hamjest
+__.assertThat(stub, __.wasCalled());
+```
+
 # Sinon matchers
 
 Sinon matchers are used for testing function calls. Replace the function with a sinon stub or spy and assert the call of the function by your code with these matchers.
