@@ -1,60 +1,69 @@
 'use strict';
 
 const _ = require('lodash');
-const sinon = require('sinon');
-const { Matcher, promiseAgnostic, asMatcher, greaterThan } = require('hamjest');
+const { TypeSafeMatcher, asMatcher } = require('hamjest');
+const promiseAgnostic = require('hamjest/lib/matchers/promiseAgnostic');
+const getType = require('hamjest/lib/utils/getType');
 
-function WasCalled(callMatcher = greaterThan(0), matchers) {
-    callMatcher = asMatcher(callMatcher);
-
-    function isStub(actual) {
-        return actual && typeof actual === 'function' && actual.args;
+module.exports = function (valueOrMatcher) {
+    const matcher = asMatcher(valueOrMatcher);
+    function getCallCount(sinonMock) {
+        return _.size(sinonMock.args);
     }
-
-	return _.create(new Matcher(), {
-		matches: function (actual) {
-
-            if (!isStub(actual)) {
-                return false;
-            }
-
-            if (!callMatcher) {
-                return actual.args.length > 0;
-            }
-
-            return callMatcher.matches(actual.args.length);
+    function isSinonMock(sinonMock) {
+        return _.isFunction(sinonMock) && _.isArray(sinonMock.args);
+    }
+	return _.create(new TypeSafeMatcher(), {
+		isExpectedType: isSinonMock,
+		matchesSafely: function (actual) {
+            const callCount = getCallCount(actual);
+			return matcher.matches(callCount);
 		},
 		describeTo: function (description) {
-            description.append('a function called ');
-            callMatcher.describeTo(description);
-            description.append(' times');
+			description
+				.append('a function called ')
+				.appendDescriptionOf(matcher)
+				.append(' times');
 		},
 		describeMismatch: function (actual, description) {
-            if (typeof actual !== 'function') {
-                description.append('was not a function');
-                return;
-            }
-            if (!isStub(actual)) {
-                description.append('was not a sinon stub to be messured');
-                return;
-            }
-            if (!callMatcher && actual.args.length === 0) {
-                description.append('was not called');
-                return;
-            }
-            description.append('function called ');
-            if (callMatcher.describeMismatch) {
-                callMatcher.describeMismatch(actual.args.length, description);
-            } else {
-                callMatcher.describeTo(description);
-            }
-            description.append(' times');
+			if (!this.isExpectedType(actual)) {
+				if (!actual) {
+					description.append('was ')
+						.appendValue(actual);
+					return;
+				}
+                if (_.isFunction(actual)) {
+                    description
+                        .append('was a ')
+                        .append(getType(actual))
+                        .append(' without a mock');
+                    return;
+                }
+				description
+					.append('was a ')
+					.append(getType(actual))
+					.append(' (')
+					.appendValue(actual)
+					.append(')');
+			} else {
+				return this.describeMismatchSafely(actual, description);
+			}
+		},
+		describeMismatchSafely: function (actual, description) {
+			const callCount = getCallCount(actual);
+            return promiseAgnostic
+                .describeMismatch(
+                    matcher.matches(callCount),
+                    () => {
+                        description
+                            .append('function called ');
+                        return matcher.describeMismatch(callCount, description);
+                    },
+                    () => {
+                        description
+                        .append(' times');
+                    }
+                );
 		}
 	});
-}
-
-WasCalled.wasCalled = function (callCount, matcher) {
-	return new WasCalled(callCount, matcher);
 };
-
-module.exports = WasCalled;
