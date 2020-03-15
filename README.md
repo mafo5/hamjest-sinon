@@ -1,3 +1,5 @@
+[![Actions Status](https://github.com/mafo5/hamjest-sinon/workflows/Node%20CI/badge.svg)](https://github.com/mafo5/hamjest-sinon/actions)
+
 # Installation
 
 ```Javascript
