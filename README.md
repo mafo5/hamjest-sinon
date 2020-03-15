@@ -3,7 +3,7 @@
 # Installation
 
 ```Javascript
-npm install hamjest-sinon --save-dev
+npm install hamjest sinon hamjest-sinon --save-dev
 ```
 
 # Usage
