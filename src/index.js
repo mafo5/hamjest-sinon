@@ -7,6 +7,11 @@ const wasCalled = require('./was-called');
 const { wasCalledWith } = require('./was-called-with');
 const { wasCalledInOrder } = require('./was-called-in-order');
 
-_.extend(require('hamjest'), { SinonMatcher, wasCalled, wasCalledWith, wasCalledInOrder });
+function extendHamjest(hamjest) {
+    _.extend(hamjest, { SinonMatcher, wasCalled, wasCalledWith, wasCalledInOrder });
+}
 
-module.exports = { SinonMatcher, wasCalled, wasCalledWith, wasCalledInOrder };
+const __ = require('hamjest');
+extendHamjest(__);
+
+module.exports = { SinonMatcher, wasCalled, wasCalledWith, wasCalledInOrder, extendHamjest };

@@ -9,7 +9,10 @@ npm install hamjest-sinon --save-dev
 Add the sinon matcher to hamjest by require the module
 ```Javascript
 const __ = require('hamjest');
-require('hamjest');
+// auto extend hamjest
+require('hamjest-sinon');
+// or
+require('hamjest-sinon').extendHamjest(__);
 
 // use matcher from hamjest
 __.assertThat(stub, __.wasCalled());
