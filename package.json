@@ -1,0 +1,28 @@
+{
+  "name": "hamjest-sinon",
+  "version": "1.0.0",
+  "description": "Sinon Matcher for Hamjest",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha \"src/**/*.spec.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mafo5/hamjest-sinon.git"
+  },
+  "keywords": [
+    "hamjest",
+    "sinon",
+    "matcher",
+    "wasCalled",
+    "mock",
+    "stub",
+    "spy"
+  ],
+  "author": "Martin Fochler",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mafo5/hamjest-sinon/issues"
+  },
+  "homepage": "https://github.com/mafo5/hamjest-sinon#readme"
+}
