@@ -55,7 +55,7 @@ Assert that a sinon stub was not called with empty arg:
 ## wasCalledInOrder(valueOrMatcher)
 Assert that a sinon stub was called in order with specific args:
 ```Javascript
-    __.assertThat(stub, __.wasCalledInOrder('first arg', 'second arg'));
+    __.assertThat(stub, __.wasCalledInOrder('first call with args', 'second call with args'));
 ```
 
 Assert that a sinon stub was called in order with variable args:
@@ -68,5 +68,5 @@ Assert that a sinon stub was not called:
 ```Javascript
     __.assertThat(stub, __.wasCalledInOrder());
     // or 
-    __.assertThat(stub, __.not(__.wasCalledWith(__.undefined())));
+    __.assertThat(stub, __.wasCalled(0));
 ```
