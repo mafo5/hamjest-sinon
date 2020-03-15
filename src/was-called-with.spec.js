@@ -35,6 +35,16 @@ describe('IsFunctionWasCalledWith', () => {
 			__.assertThat(sut.matches(stub), __.is(false));
 		});
 
+		it('should not match non-sinon-mocks', () => {
+			__.assertThat(sut.matches(12), __.is(false));
+			__.assertThat(sut.matches(new Date()), __.is(false));
+			__.assertThat(sut.matches([]), __.is(false));
+			__.assertThat(sut.matches({}), __.is(false));
+			__.assertThat(sut.matches(() => {}), __.is(false));
+			__.assertThat(sut.matches(true), __.is(false));
+			__.assertThat(sut.matches(), __.is(false));
+		});
+
 		describe('description', () => {
 			let description;
 			beforeEach(() => {
@@ -45,7 +55,7 @@ describe('IsFunctionWasCalledWith', () => {
 
 				sut.describeTo(description);
 
-				__.assertThat(description.get(), __.equalTo('a function walled with [a string containing "expected", <7>]'));
+				__.assertThat(description.get(), __.equalTo('a function called with [a string containing "expected", <7>]'));
 			});
 
 			it('should contain all mismatches', () => {
@@ -55,7 +65,7 @@ describe('IsFunctionWasCalledWith', () => {
 
 				sut.describeMismatch(stub, description);
 
-				__.assertThat(description.get(), __.equalTo('function was called with:\n(1) ["first"]\n(2) ["second", "call"]'));
+				__.assertThat(description.get(), __.equalTo('function was called with:\n(0) ["first"]\n(1) ["second", "call"]'));
 			});
 	
 			it('should fit for non-function', () => {

@@ -89,14 +89,4 @@ describe('SinonMatcher', () => {
             __.assertThat(sut.getCallCount(null), __.is(0));
         });
     });
-    
-    describe('getCallResults', () => {
-        it('should return the matcher results per call', () => {
-            const stub = sinon.stub();
-            stub();
-            stub('');
-            stub('something');
-            __.assertThat(sut.getCallResults(stub, [__.is('')]), __.is([false, true, false]));
-        });
-    });
 });

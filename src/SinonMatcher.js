@@ -12,17 +12,8 @@ function SinonMatcher() {
     function getCallCount(sinonMock) {
         return sinonMock && _.size(sinonMock.args) || 0;
     }
-	function getCallResults(sinonMock, matchers) {
-		return _.map(sinonMock.args, (callArgs) => {
-			const matcherResults = _.map(matchers, (matcher, index) => {
-				return matcher.matches(callArgs[index]);
-			});
-			return promiseAgnostic.matchesAggregate(matcherResults, _.every);
-		});
-	}
 	return _.create(new TypeSafeMatcher(), {
         getCallCount: getCallCount,
-        getCallResults: getCallResults,
 		isExpectedType: isSinonMock,
 		describeMismatch: function (actual, description) {
 			if (!this.isExpectedType(actual)) {
