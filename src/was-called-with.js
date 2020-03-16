@@ -9,6 +9,9 @@ function IsFunctionWasCalledWith(itemsOrMatchers) {
 	const matchers = _.map(itemsOrMatchers, asMatcher);
 	function getCallResults(sinonMock, matchers) {
 		return _.map(sinonMock.args, (callArgs) => {
+			if (callArgs.length !== matchers.length) {
+				return false;
+			}
 			const matcherResults = _.map(matchers, (matcher, index) => {
 				return matcher.matches(callArgs[index]);
 			});
@@ -17,9 +20,6 @@ function IsFunctionWasCalledWith(itemsOrMatchers) {
 	}
 	return _.create(new SinonMatcher(), {
 		matchesSafely: function (actual) {
-			if (actual.args.length !== matchers.length) {
-				return false;
-			}
 			const callResults = getCallResults(actual, matchers);
 			return promiseAgnostic.matchesAggregate(callResults, _.some);
 		},
