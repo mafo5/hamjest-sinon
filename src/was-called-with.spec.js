@@ -23,8 +23,8 @@ describe('IsFunctionWasCalledWith', () => {
 
 		it('should not match if there are too many items', () => {
             const stub = sinon.stub();
-            stub('expected item', 7);
-			__.assertThat(sut.matches(['expected', 7, 7]), __.is(false));
+            stub('expected item', 7, 7);
+			__.assertThat(sut.matches(stub), __.is(false));
 		});
 
 		it('should not match if items are missing', () => {

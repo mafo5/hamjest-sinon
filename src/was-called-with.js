@@ -17,6 +17,9 @@ function IsFunctionWasCalledWith(itemsOrMatchers) {
 	}
 	return _.create(new SinonMatcher(), {
 		matchesSafely: function (actual) {
+			if (actual.args.length !== matchers.length) {
+				return false;
+			}
 			const callResults = getCallResults(actual, matchers);
 			return promiseAgnostic.matchesAggregate(callResults, _.some);
 		},
