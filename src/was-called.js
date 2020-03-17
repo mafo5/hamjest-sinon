@@ -1,11 +1,14 @@
 'use strict';
 
 const _ = require('lodash');
-const { asMatcher } = require('hamjest');
+const { asMatcher, greaterThan } = require('hamjest');
 const promiseAgnostic = require('hamjest/lib/matchers/promiseAgnostic');
 const SinonMatcher = require('./SinonMatcher');
 
 module.exports = function (valueOrMatcher) {
+    if (valueOrMatcher === undefined) {
+        valueOrMatcher = greaterThan(0);
+    }
     const matcher = asMatcher(valueOrMatcher);
 	return _.create(new SinonMatcher(), {
 		matchesSafely: function (actual) {

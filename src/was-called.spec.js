@@ -102,4 +102,34 @@ describe('wasCalled', () => {
 			});
 		});
 	});
+
+	describe('emtpy', () => {
+		let sut;
+		beforeEach(() => {
+			sut = wasCalled();
+		});
+	
+		it('should match stub', () => {
+			const stub = sinon.stub();
+			__.assertThat(sut.matches(stub), __.is(false));
+			stub();
+			__.assertThat(sut.matches(stub), __.is(true));
+			stub();
+			__.assertThat(sut.matches(stub), __.is(true));
+		});
+	
+		describe('description', () => {
+			let description;
+			beforeEach(() => {
+				description = new __.Description();
+			});
+	
+			it('should contain matcher description', () => {
+	
+				sut.describeTo(description);
+	
+				__.assertThat(description.get(), __.equalTo('a function called a number greater than <0> times'));
+			});
+		});
+	});
 });
