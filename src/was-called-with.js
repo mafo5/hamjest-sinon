@@ -29,6 +29,10 @@ function IsFunctionWasCalledWith(itemsOrMatchers) {
 				.appendList('[', ', ', ']', matchers);
 		},
 		describeMismatchSafely: function (actual, description) {
+			if (actual.args.length === 0) {
+				description.append('function was not called');
+				return description;
+			}
 			const results = getCallResults(actual, matchers);
 			description.append('function was called with:');
 			return promiseAgnostic.describeMismatchAggregate(results, (result, index) => {

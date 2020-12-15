@@ -81,6 +81,13 @@ describe('IsFunctionWasCalledWith', () => {
 	
 				__.assertThat(description.get(), __.equalTo('was a Function without a mock'));
 			});
+	
+			it('should fit no calls', () => {
+	
+				sut.describeMismatch(sinon.stub(), description);
+	
+				__.assertThat(description.get(), __.equalTo('function was not called'));
+			});
 		});
 	});
 });
