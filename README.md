@@ -92,3 +92,9 @@ Assert that a sinon stub was not called:
     // or 
     __.assertThat(stub, __.wasCalled(0));
 ```
+
+# License
+
+Licensed under the MIT License [(enclosed)](./LICENSE). 
+
+This library is inspired by and based on the work of [Hamjest](https://github.com/rluba/hamjest).
