@@ -1,19 +1,18 @@
 'use strict';
 
 const _ = require('lodash');
-const { TypeSafeMatcher } = require('hamjest');
-const promiseAgnostic = require('hamjest/lib/matchers/promiseAgnostic');
+const {TypeSafeMatcher} = require('hamjest');
 const getType = require('hamjest/lib/utils/getType');
 
 function SinonMatcher() {
-    function isSinonMock(sinonMock) {
-        return _.isFunction(sinonMock) && _.isArray(sinonMock.args);
+	function isSinonMock(sinonMock) {
+		return _.isFunction(sinonMock) && _.isArray(sinonMock.args);
 	}
-    function getCallCount(sinonMock) {
-        return sinonMock && _.size(sinonMock.args) || 0;
-    }
+	function getCallCount(sinonMock) {
+		return sinonMock && _.size(sinonMock.args) || 0;
+	}
 	return _.create(new TypeSafeMatcher(), {
-        getCallCount: getCallCount,
+		getCallCount: getCallCount,
 		isExpectedType: isSinonMock,
 		describeMismatch: function (actual, description) {
 			if (!this.isExpectedType(actual)) {
@@ -22,13 +21,13 @@ function SinonMatcher() {
 						.appendValue(actual);
 					return;
 				}
-                if (_.isFunction(actual)) {
-                    description
+				if (_.isFunction(actual)) {
+					description
                         .append('was a ')
                         .append(getType(actual))
                         .append(' without a mock');
-                    return;
-                }
+					return;
+				}
 				description
 					.append('was a ')
 					.append(getType(actual))

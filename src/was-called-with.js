@@ -1,7 +1,7 @@
 'use strict';
 
 const _ = require('lodash');
-const { asMatcher } = require('hamjest');
+const {asMatcher} = require('hamjest');
 const promiseAgnostic = require('hamjest/lib/matchers/promiseAgnostic');
 const SinonMatcher = require('./SinonMatcher');
 
@@ -35,7 +35,7 @@ function IsFunctionWasCalledWith(itemsOrMatchers) {
 			}
 			const results = getCallResults(actual, matchers);
 			description.append('function was called with:');
-			return promiseAgnostic.describeMismatchAggregate(results, (result, index) => {
+			return promiseAgnostic.describeMismatchAggregate(results, (__result, index) => {
 				const callArgs = actual.args[index];
 				description.append('\n');
 				description.indented(() => {

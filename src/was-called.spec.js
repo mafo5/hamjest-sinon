@@ -74,28 +74,24 @@ describe('wasCalled', () => {
 			});
 	
 			it('should contain matcher description', () => {
-	
 				sut.describeTo(description);
 	
 				__.assertThat(description.get(), __.equalTo('a function called a number greater than <2> times'));
 			});
 	
 			it('should contain mismatched value and size', () => {
-	
 				sut.describeMismatch(sinon.stub(), description);
 	
 				__.assertThat(description.get(), __.equalTo('function called was <0> times'));
 			});
 	
 			it('should fit for non-function', () => {
-	
 				sut.describeMismatch(7, description);
 	
 				__.assertThat(description.get(), __.equalTo('was a Number (<7>)'));
 			});
 	
 			it('should fit for non-stub', () => {
-	
 				sut.describeMismatch(() => {}, description);
 	
 				__.assertThat(description.get(), __.equalTo('was a Function without a mock'));
@@ -125,7 +121,6 @@ describe('wasCalled', () => {
 			});
 	
 			it('should contain matcher description', () => {
-	
 				sut.describeTo(description);
 	
 				__.assertThat(description.get(), __.equalTo('a function called a number greater than <0> times'));

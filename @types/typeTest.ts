@@ -15,6 +15,8 @@ __.assertThat(mock, ___.wasCalledWith());
 mock('something');
 __.assertThat(mock, ___.wasCalledWith('something'));
 __.assertThat(mock, ___.wasCalledWith(__.containsString('ethi')));
+__.assertThat(mock, ___.wasCalledWith('something', 'more'));
 
 // wasCalledInOrder
-__.assertThat(mock, ___.wasCalledInOrder([, 'something']));
+__.assertThat(mock, ___.wasCalledInOrder([undefined, 'something']));
+__.assertThat(mock, ___.wasCalledInOrder([undefined, 'something'], [undefined, 'more']));

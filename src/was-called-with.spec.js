@@ -3,10 +3,9 @@
 const __ = require('hamjest');
 const sinon = require('sinon');
 
-const { wasCalledWith } = require('./was-called-with');
+const {wasCalledWith} = require('./was-called-with');
 
 describe('IsFunctionWasCalledWith', () => {
-
 	describe('wasCalledWith', () => {
 		let sut;
 		beforeEach(() => {
@@ -14,24 +13,24 @@ describe('IsFunctionWasCalledWith', () => {
 		});
 
 		it('should match if all matchers match in order', () => {
-            const stub = sinon.stub();
-            stub(7, 'expected item');
+			const stub = sinon.stub();
+			stub(7, 'expected item');
 			__.assertThat('wrong order', sut.matches(stub), __.is(false));
-            stub('expected item', 7);
-            __.assertThat('right order', sut.matches(stub), __.is(true));
+			stub('expected item', 7);
+			__.assertThat('right order', sut.matches(stub), __.is(true));
 		});
 
 		it('should not match if there are too many items', () => {
-            const stub = sinon.stub();
-            stub('expected item', 7, 7);
+			const stub = sinon.stub();
+			stub('expected item', 7, 7);
 			__.assertThat(sut.matches(stub), __.is(false));
 		});
 
 		it('should not match if items are missing', () => {
-            const stub = sinon.stub();
-            stub();
+			const stub = sinon.stub();
+			stub();
 			__.assertThat(sut.matches(stub), __.is(false));
-            stub('expected item');
+			stub('expected item');
 			__.assertThat(sut.matches(stub), __.is(false));
 		});
 
@@ -52,16 +51,15 @@ describe('IsFunctionWasCalledWith', () => {
 			});
 
 			it('should contain item description', () => {
-
 				sut.describeTo(description);
 
 				__.assertThat(description.get(), __.equalTo('a function called with [a string containing "expected", <7>]'));
 			});
 
 			it('should contain all mismatches', () => {
-                const stub = sinon.stub();
-                stub('first');
-                stub('second', 'call');
+				const stub = sinon.stub();
+				stub('first');
+				stub('second', 'call');
 
 				sut.describeMismatch(stub, description);
 
@@ -69,21 +67,18 @@ describe('IsFunctionWasCalledWith', () => {
 			});
 	
 			it('should fit for non-function', () => {
-	
 				sut.describeMismatch(7, description);
 	
 				__.assertThat(description.get(), __.equalTo('was a Number (<7>)'));
 			});
 	
 			it('should fit for non-stub', () => {
-	
 				sut.describeMismatch(() => {}, description);
 	
 				__.assertThat(description.get(), __.equalTo('was a Function without a mock'));
 			});
 	
 			it('should fit no calls', () => {
-	
 				sut.describeMismatch(sinon.stub(), description);
 	
 				__.assertThat(description.get(), __.equalTo('function was not called'));

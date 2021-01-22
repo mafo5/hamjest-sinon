@@ -15,33 +15,33 @@ describe('SinonMatcher', () => {
 				return false;
 			}
 		});
-    });
+	});
     
-    describe('isExpectedType', () => {
-        it('should return true for sinon stub', () => {
-            const mock = sinon.stub();
+	describe('isExpectedType', () => {
+		it('should return true for sinon stub', () => {
+			const mock = sinon.stub();
 
-            __.assertThat(sut.isExpectedType(mock), __.is(true));
-        });
-        it('should return true for sinon spy', () => {
-            const mock = sinon.spy();
+			__.assertThat(sut.isExpectedType(mock), __.is(true));
+		});
+		it('should return true for sinon spy', () => {
+			const mock = sinon.spy();
 
-            __.assertThat(sut.isExpectedType(mock), __.is(true));
-        });
-        it('should return true for sinon fake', () => {
-            const mock = sinon.fake();
+			__.assertThat(sut.isExpectedType(mock), __.is(true));
+		});
+		it('should return true for sinon fake', () => {
+			const mock = sinon.fake();
 
-            __.assertThat(sut.isExpectedType(mock), __.is(true));
-        });
-        it('should return false for others', () => {
-            __.assertThat(sut.isExpectedType(() => {}), __.is(false));
-            __.assertThat(sut.isExpectedType(1), __.is(false));
-            __.assertThat(sut.isExpectedType(''), __.is(false));
-            __.assertThat(sut.isExpectedType({}), __.is(false));
-            __.assertThat(sut.isExpectedType([]), __.is(false));
-            __.assertThat(sut.isExpectedType(true), __.is(false));
-        });
-    });
+			__.assertThat(sut.isExpectedType(mock), __.is(true));
+		});
+		it('should return false for others', () => {
+			__.assertThat(sut.isExpectedType(() => {}), __.is(false));
+			__.assertThat(sut.isExpectedType(1), __.is(false));
+			__.assertThat(sut.isExpectedType(''), __.is(false));
+			__.assertThat(sut.isExpectedType({}), __.is(false));
+			__.assertThat(sut.isExpectedType([]), __.is(false));
+			__.assertThat(sut.isExpectedType(true), __.is(false));
+		});
+	});
 
 	describe('description', () => {
 		let description;
@@ -50,43 +50,39 @@ describe('SinonMatcher', () => {
 		});
 
 		it('should describe undefined as "undefined"', () => {
-
 			sut.describeMismatch(undefined, description);
 
 			__.assertThat(description.get(), __.equalTo('was undefined'));
 		});
 
 		it('should describe null as "null"', () => {
-
 			sut.describeMismatch(null, description);
 
 			__.assertThat(description.get(), __.equalTo('was null'));
 		});
 
 		it('should describe function as "a Function without a mock"', () => {
-
 			sut.describeMismatch(() => {}, description);
 
 			__.assertThat(description.get(), __.equalTo('was a Function without a mock'));
 		});
 
 		it('should describe a digit as "Number"', () => {
-
 			sut.describeMismatch(1, description);
 
 			__.assertThat(description.get(), __.equalTo('was a Number (<1>)'));
 		});
-    });
+	});
     
-    describe('getCallCount', () => {
-        it('should return the count of the calls', () => {
-            const stub = sinon.stub();
-            stub();
-            __.assertThat(sut.getCallCount(stub), __.is(1));
-        });
-        it('should fallback to 9 for no args', () => {
-            __.assertThat(sut.getCallCount({}), __.is(0));
-            __.assertThat(sut.getCallCount(null), __.is(0));
-        });
-    });
+	describe('getCallCount', () => {
+		it('should return the count of the calls', () => {
+			const stub = sinon.stub();
+			stub();
+			__.assertThat(sut.getCallCount(stub), __.is(1));
+		});
+		it('should fallback to 9 for no args', () => {
+			__.assertThat(sut.getCallCount({}), __.is(0));
+			__.assertThat(sut.getCallCount(null), __.is(0));
+		});
+	});
 });
