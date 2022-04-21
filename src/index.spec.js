@@ -1,7 +1,7 @@
 'use strict';
 
 const assert = require('assert');
-const _ = require('lodash');
+const isUndefined = require('lodash/isUndefined');
 
 describe('hamjest', () => {
 	let sut;
@@ -13,7 +13,7 @@ describe('hamjest', () => {
 
 	describe('without plugin', () => {
 		it('should not contains wasCalled', () => {
-			assert.equal(_.isUndefined(sut.wasCalled), true, 'wasCalled known to hamjest');
+			assert.equal(isUndefined(sut.wasCalled), true, 'wasCalled known to hamjest');
 		});
 	});
 
@@ -23,7 +23,7 @@ describe('hamjest', () => {
 		});
 
 		it('should contains wasCalled', () => {
-			assert.equal(_.isUndefined(sut.wasCalled), false, 'wasCalled not known to hamjest');
+			assert.equal(isUndefined(sut.wasCalled), false, 'wasCalled not known to hamjest');
 		});
 	});
 });

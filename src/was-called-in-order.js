@@ -1,12 +1,15 @@
 'use strict';
 
-const _ = require('lodash');
+const isFunction = require('lodash/isFunction');
+const create  = require('lodash/create');
+const map = require('lodash/map');
+const every = require('lodash/every');
 const {asMatcher} = require('hamjest');
 const promiseAgnostic = require('hamjest/lib/matchers/promiseAgnostic');
 const SinonMatcher = require('./SinonMatcher');
 
 function asSelfDescribing(value) {
-	if (!value || !_.isFunction(value.describeTo)) {
+	if (!value || !isFunction(value.describeTo)) {
 		return {
 			describeTo(description) {
 				description.appendValue(value);
@@ -18,20 +21,20 @@ function asSelfDescribing(value) {
 }
 
 function IsFunctionWasCalledInOrder(itemsOrMatchers) {
-	const matchers = _.map(itemsOrMatchers, asMatcher);
+	const matchers = map(itemsOrMatchers, asMatcher);
 	function getCallResults(sinonMock, matchers) {
 		const callArgs = sinonMock.args;
-		return _.map(matchers, (matcher, index) => {
+		return map(matchers, (matcher, index) => {
 			return matcher.matches(callArgs[index]);
 		});
 	}
-	return _.create(new SinonMatcher(), {
+	return create(new SinonMatcher(), {
 		matchesSafely: function (actual) {
 			if (actual.args.length !== matchers.length) {
 				return false;
 			}
 			const callResults = getCallResults(actual, matchers);
-			return promiseAgnostic.matchesAggregate(callResults, _.every);
+			return promiseAgnostic.matchesAggregate(callResults, every);
 		},
 		describeTo: function (description) {
 			description.appendList('a function called in order with args ', ', ', '', matchers);

@@ -1,27 +1,30 @@
 'use strict';
 
-const _ = require('lodash');
+const create  = require('lodash/create');
+const map = require('lodash/map');
+const every = require('lodash/every');
+const some = require('lodash/some');
 const {asMatcher} = require('hamjest');
 const promiseAgnostic = require('hamjest/lib/matchers/promiseAgnostic');
 const SinonMatcher = require('./SinonMatcher');
 
 function IsFunctionWasCalledWith(itemsOrMatchers) {
-	const matchers = _.map(itemsOrMatchers, asMatcher);
+	const matchers = map(itemsOrMatchers, asMatcher);
 	function getCallResults(sinonMock, matchers) {
-		return _.map(sinonMock.args, (callArgs) => {
+		return map(sinonMock.args, (callArgs) => {
 			if (callArgs.length !== matchers.length) {
 				return false;
 			}
-			const matcherResults = _.map(matchers, (matcher, index) => {
+			const matcherResults = map(matchers, (matcher, index) => {
 				return matcher.matches(callArgs[index]);
 			});
-			return promiseAgnostic.matchesAggregate(matcherResults, _.every);
+			return promiseAgnostic.matchesAggregate(matcherResults, every);
 		});
 	}
-	return _.create(new SinonMatcher(), {
+	return create(new SinonMatcher(), {
 		matchesSafely: function (actual) {
 			const callResults = getCallResults(actual, matchers);
-			return promiseAgnostic.matchesAggregate(callResults, _.some);
+			return promiseAgnostic.matchesAggregate(callResults, some);
 		},
 		describeTo: function (description) {
 			description

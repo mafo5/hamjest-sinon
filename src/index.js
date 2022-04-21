@@ -1,6 +1,6 @@
 'use strict';
 
-const _ = require('lodash');
+const extend = require('lodash/extend');
 
 const SinonMatcher = require('./SinonMatcher');
 const wasCalled = require('./was-called');
@@ -8,7 +8,7 @@ const {wasCalledWith} = require('./was-called-with');
 const {wasCalledInOrder} = require('./was-called-in-order');
 
 function extendHamjest(hamjest) {
-	_.extend(hamjest, {SinonMatcher, wasCalled, wasCalledWith, wasCalledInOrder});
+	extend(hamjest, {SinonMatcher, wasCalled, wasCalledWith, wasCalledInOrder});
 }
 
 const __ = require('hamjest');

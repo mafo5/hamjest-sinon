@@ -1,6 +1,6 @@
 'use strict';
 
-const _ = require('lodash');
+const create = require('lodash/create');
 const __ = require('hamjest');
 const sinon = require('sinon');
 
@@ -10,7 +10,7 @@ describe('SinonMatcher', () => {
 	let sut;
 
 	beforeEach(() => {
-		sut = _.create(new SinonMatcher(), {
+		sut = create(new SinonMatcher(), {
 			machesSafely: () => {
 				return false;
 			}

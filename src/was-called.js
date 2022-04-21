@@ -1,6 +1,6 @@
 'use strict';
 
-const _ = require('lodash');
+const create = require('lodash/create');
 const {asMatcher, greaterThan} = require('hamjest');
 const promiseAgnostic = require('hamjest/lib/matchers/promiseAgnostic');
 const SinonMatcher = require('./SinonMatcher');
@@ -10,7 +10,7 @@ module.exports = function (valueOrMatcher) {
 		valueOrMatcher = greaterThan(0);
 	}
 	const matcher = asMatcher(valueOrMatcher);
-	return _.create(new SinonMatcher(), {
+	return create(new SinonMatcher(), {
 		matchesSafely: function (actual) {
 			const callCount = this.getCallCount(actual);
 			return matcher.matches(callCount);
