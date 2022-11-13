@@ -6,12 +6,12 @@ const every = require('lodash/every');
 const some = require('lodash/some');
 const {asMatcher} = require('hamjest');
 const promiseAgnostic = require('hamjest/lib/matchers/promiseAgnostic');
-const SinonMatcher = require('./SinonMatcher');
+const MockMatcher = require('./MockMatcher');
 
 function IsFunctionWasCalledWith(itemsOrMatchers) {
 	const matchers = map(itemsOrMatchers, asMatcher);
-	function getCallResults(sinonMock, matchers) {
-		return map(sinonMock.args, (callArgs) => {
+	function getCallResults(args, matchers) {
+		return map(args, (callArgs) => {
 			if (callArgs.length !== matchers.length) {
 				return false;
 			}
@@ -21,9 +21,9 @@ function IsFunctionWasCalledWith(itemsOrMatchers) {
 			return promiseAgnostic.matchesAggregate(matcherResults, every);
 		});
 	}
-	return create(new SinonMatcher(), {
+	return create(new MockMatcher(), {
 		matchesSafely: function (actual) {
-			const callResults = getCallResults(actual, matchers);
+			const callResults = getCallResults(this.getAllCallArgs(actual), matchers);
 			return promiseAgnostic.matchesAggregate(callResults, some);
 		},
 		describeTo: function (description) {
@@ -32,14 +32,15 @@ function IsFunctionWasCalledWith(itemsOrMatchers) {
 				.appendList('[', ', ', ']', matchers);
 		},
 		describeMismatchSafely: function (actual, description) {
-			if (actual.args.length === 0) {
+			const allCallArgs = this.getAllCallArgs(actual);
+			if (allCallArgs.length === 0) {
 				description.append('function was not called');
 				return description;
 			}
-			const results = getCallResults(actual, matchers);
+			const results = getCallResults(allCallArgs, matchers);
 			description.append('function was called with:');
 			return promiseAgnostic.describeMismatchAggregate(results, (__result, index) => {
-				const callArgs = actual.args[index];
+				const callArgs = allCallArgs[index];
 				description.append('\n');
 				description.indented(() => {
 					description

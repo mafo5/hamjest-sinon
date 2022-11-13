@@ -1,6 +1,7 @@
 'use strict';
 
 const __ = require('hamjest');
+const jest = require('jest-mock');
 const sinon = require('sinon');
 
 const wasCalled = require('./was-called');
@@ -12,59 +13,50 @@ describe('wasCalled', () => {
 			sut = wasCalled(__.greaterThan(2));
 		});
 	
-		it('should match stub', () => {
-			const stub = sinon.stub();
-			__.assertThat(sut.matches(stub), __.is(false));
-			stub();
-			__.assertThat(sut.matches(stub), __.is(false));
-			stub();
-			__.assertThat(sut.matches(stub), __.is(false));
-			stub();
-			__.assertThat(sut.matches(stub), __.is(true));
-		});
-	
-		it('should match spy', () => {
-			const stub = sinon.spy();
-			__.assertThat(sut.matches(stub), __.is(false));
-			stub();
-			__.assertThat(sut.matches(stub), __.is(false));
-			stub();
-			__.assertThat(sut.matches(stub), __.is(false));
-			stub();
-			__.assertThat(sut.matches(stub), __.is(true));
-		});
-	
-		it('should match fake', () => {
-			const stub = sinon.fake();
-			__.assertThat(sut.matches(stub), __.is(false));
-			stub();
-			__.assertThat(sut.matches(stub), __.is(false));
-			stub();
-			__.assertThat(sut.matches(stub), __.is(false));
-			stub();
-			__.assertThat(sut.matches(stub), __.is(true));
+		[
+			{mockCreator: () => sinon.stub(), mockType: 'sinon stub'},
+			{mockCreator: () => sinon.spy(), mockType: 'sinon spy'},
+			{mockCreator: () => sinon.fake(), mockType: 'sinon fake'},
+			{mockCreator: () => jest.fn(), mockType: 'Jest Mock'},
+		].forEach(({mockCreator, mockType}) => {
+			it(`should match ${mockType}`, () => {
+				const mock = mockCreator();
+				const matches = [];
+				matches.push(sut.matches(mock));
+				mock();
+				matches.push(sut.matches(mock));
+				mock();
+				matches.push(sut.matches(mock));
+				mock();
+				matches.push(sut.matches(mock));
+				__.assertThat(matches, __.contains(false, false, false, true));
+			});
+
+			it(`should wrap simple value in equalTo matcher for ${mockType}`, () => {
+				const mock = mockCreator();
+				const matches = [];
+				sut = wasCalled(2);
+				matches.push(sut.matches(mock));
+				mock();
+				matches.push(sut.matches(mock));
+				mock();
+				matches.push(sut.matches(mock));
+				mock();
+				matches.push(sut.matches(mock));
+				__.assertThat(matches, __.contains(false, false, true, false));
+			});
 		});
 	
 		it('should not match other types', () => {
-			__.assertThat(sut.matches(12), __.is(false));
-			__.assertThat(sut.matches(new Date()), __.is(false));
-			__.assertThat(sut.matches([]), __.is(false));
-			__.assertThat(sut.matches({}), __.is(false));
-			__.assertThat(sut.matches(() => {}), __.is(false));
-			__.assertThat(sut.matches(true), __.is(false));
-			__.assertThat(sut.matches(), __.is(false));
-		});
-	
-		it('should wrap simple value in equalTo matcher', () => {
-			sut = wasCalled(2);
-			const stub = sinon.stub();
-			__.assertThat(sut.matches(stub), __.is(false));
-			stub();
-			__.assertThat(sut.matches(stub), __.is(false));
-			stub();
-			__.assertThat(sut.matches(stub), __.is(true));
-			stub();
-			__.assertThat(sut.matches(stub), __.is(false));
+			__.assertThat([
+				sut.matches(12),
+				sut.matches(new Date()),
+				sut.matches([]),
+				sut.matches({}),
+				sut.matches(() => {}),
+				sut.matches(true),
+				sut.matches(),
+			], __.everyItem(__.is(false)));
 		});
 	
 		describe('description', () => {
@@ -79,10 +71,17 @@ describe('wasCalled', () => {
 				__.assertThat(description.get(), __.equalTo('a function called a number greater than <2> times'));
 			});
 	
-			it('should contain mismatched value and size', () => {
-				sut.describeMismatch(sinon.stub(), description);
-	
-				__.assertThat(description.get(), __.equalTo('function called was <0> times'));
+			[
+				{mockCreator: () => sinon.stub(), mockType: 'sinon stub'},
+				{mockCreator: () => sinon.spy(), mockType: 'sinon spy'},
+				{mockCreator: () => sinon.fake(), mockType: 'sinon fake'},
+				{mockCreator: () => jest.fn(), mockType: 'Jest Mock'},
+			].forEach(({mockCreator, mockType}) => {
+				it(`should contain mismatched value and size for ${mockType}`, () => {
+					sut.describeMismatch(mockCreator(), description);
+		
+					__.assertThat(description.get(), __.equalTo('function called was <0> times'));
+				});
 			});
 	
 			it('should fit for non-function', () => {
@@ -105,13 +104,22 @@ describe('wasCalled', () => {
 			sut = wasCalled();
 		});
 	
-		it('should match stub', () => {
-			const stub = sinon.stub();
-			__.assertThat(sut.matches(stub), __.is(false));
-			stub();
-			__.assertThat(sut.matches(stub), __.is(true));
-			stub();
-			__.assertThat(sut.matches(stub), __.is(true));
+		[
+			{mockCreator: () => sinon.stub(), mockType: 'sinon stub'},
+			{mockCreator: () => sinon.spy(), mockType: 'sinon spy'},
+			{mockCreator: () => sinon.fake(), mockType: 'sinon fake'},
+			{mockCreator: () => jest.fn(), mockType: 'Jest Mock'},
+		].forEach(({mockCreator, mockType}) => {
+			it(`should match ${mockType}`, () => {
+				const mock = mockCreator();
+				const matches = [];
+				matches.push(sut.matches(mock));
+				mock();
+				matches.push(sut.matches(mock));
+				mock();
+				matches.push(sut.matches(mock));
+				__.assertThat(matches, __.contains(false, true, true));
+			});
 		});
 	
 		describe('description', () => {

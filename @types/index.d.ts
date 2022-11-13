@@ -4,6 +4,7 @@ declare module 'hamjest-sinon' {
     type Hamjest = any;
 
     export class SinonMatcher extends Matcher {}
+    export class MockMatcher extends Matcher {}
 
     export function wasCalled(valueOrMatcher?: ValueOrMatcher): Matcher;
     export function wasCalledWith(valueOrMatcher?: ValueOrMatcher): Matcher;

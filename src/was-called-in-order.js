@@ -6,7 +6,7 @@ const map = require('lodash/map');
 const every = require('lodash/every');
 const {asMatcher} = require('hamjest');
 const promiseAgnostic = require('hamjest/lib/matchers/promiseAgnostic');
-const SinonMatcher = require('./SinonMatcher');
+const MockMatcher = require('./MockMatcher');
 
 function asSelfDescribing(value) {
 	if (!value || !isFunction(value.describeTo)) {
@@ -22,26 +22,26 @@ function asSelfDescribing(value) {
 
 function IsFunctionWasCalledInOrder(itemsOrMatchers) {
 	const matchers = map(itemsOrMatchers, asMatcher);
-	function getCallResults(sinonMock, matchers) {
-		const callArgs = sinonMock.args;
+	function getCallResults(callArgs, matchers) {
 		return map(matchers, (matcher, index) => {
 			return matcher.matches(callArgs[index]);
 		});
 	}
-	return create(new SinonMatcher(), {
+	return create(new MockMatcher(), {
 		matchesSafely: function (actual) {
-			if (actual.args.length !== matchers.length) {
+			const callArgs = this.getAllCallArgs(actual);
+			if (callArgs.length !== matchers.length) {
 				return false;
 			}
-			const callResults = getCallResults(actual, matchers);
+			const callResults = getCallResults(callArgs, matchers);
 			return promiseAgnostic.matchesAggregate(callResults, every);
 		},
 		describeTo: function (description) {
 			description.appendList('a function called in order with args ', ', ', '', matchers);
 		},
 		describeMismatchSafely: function (actual, description) {
-			const callArgs = actual.args;
-			const results = getCallResults(actual, matchers);
+			const callArgs = this.getAllCallArgs(actual);
+			const results = getCallResults(callArgs, matchers);
 
 			let first = true;
 			return promiseAgnostic.describeMismatchAggregate(results, (result, index) => {

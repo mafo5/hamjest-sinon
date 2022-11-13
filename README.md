@@ -20,6 +20,10 @@ require('hamjest-sinon').extendHamjest(__);
 __.assertThat(stub, __.wasCalled());
 ```
 
+# Mock matchers
+
+Mock matchers is an extension to [Sinon matchers](#Sinon%20matchers) which supports the [Jest Mock](https://jestjs.io/docs/mock-functions) as well.
+
 # Sinon matchers
 
 Sinon matchers are used for testing function calls. Replace the function with a sinon stub or spy and assert the call of the function by your code with these matchers.

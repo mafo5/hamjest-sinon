@@ -1,6 +1,7 @@
 'use strict';
 
 const __ = require('hamjest');
+const jest = require('jest-mock');
 const sinon = require('sinon');
 
 const {wasCalledInOrder} = require('./was-called-in-order');
@@ -12,26 +13,36 @@ describe('IsFunctionWasCalledInOrder', () => {
 			sut = wasCalledInOrder(__.contains(__.containsString('expected')), __.hasSize(1));
 		});
 
-		it('should match if all matchers match in order', () => {
-			const mock = sinon.stub();
-			mock('expected');
-			mock(7);
-			__.assertThat(sut.matches(mock), __.is(true));
-		});
+		[
+			{mockCreator: () => sinon.stub(), mockType: 'sinon stub'},
+			{mockCreator: () => sinon.spy(), mockType: 'sinon spy'},
+			{mockCreator: () => sinon.fake(), mockType: 'sinon fake'},
+			{mockCreator: () => jest.fn(), mockType: 'Jest Mock'},
+		].forEach(({mockCreator, mockType}) => {
+			describe(`for ${mockType}`, () => {
+				let mock;
+				beforeEach(() => {
+					mock = mockCreator();
+				});
+				it('should match if all matchers match in order', () => {
+					mock('expected');
+					mock(7);
+					__.assertThat(sut.matches(mock), __.is(true));
+				});
 
-		it('should not match if there are too many items', () => {
-			const mock = sinon.stub();
-			mock('expected');
-			mock(7);
-			mock(7);
-			__.assertThat(sut.matches(mock), __.is(false));
-		});
+				it('should not match if there are too many items', () => {
+					mock('expected');
+					mock(7);
+					mock(7);
+					__.assertThat(sut.matches(mock), __.is(false));
+				});
 
-		it('should not match if items are missing', () => {
-			const mock = sinon.stub();
-			__.assertThat(sut.matches(mock), __.is(false));
-			mock('expected');
-			__.assertThat(sut.matches(mock), __.is(false));
+				it('should not match if items are missing', () => {
+					__.assertThat(sut.matches(mock), __.is(false));
+					mock('expected');
+					__.assertThat(sut.matches(mock), __.is(false));
+				});
+			});
 		});
 
 		it('should not match non-sinon-mocks', () => {
@@ -56,35 +67,45 @@ describe('IsFunctionWasCalledInOrder', () => {
 				__.assertThat(description.get(), __.equalTo('a function called in order with args [a string containing "expected"], a collection or string with size <1>'));
 			});
 
-			it('should contain all mismatches', () => {
-				const mock = sinon.stub();
-				mock(5);
-				mock(6, 2);
-				mock(7);
+			[
+				{mockCreator: () => sinon.stub(), mockType: 'sinon stub'},
+				{mockCreator: () => sinon.spy(), mockType: 'sinon spy'},
+				{mockCreator: () => sinon.fake(), mockType: 'sinon fake'},
+				{mockCreator: () => jest.fn(), mockType: 'Jest Mock'},
+			].forEach(({mockCreator, mockType}) => {
+				describe(`for ${mockType}`, () => {
+					let mock;
+					beforeEach(() => {
+						mock = mockCreator();
+					});
 
-				sut.describeMismatch(mock, description);
+					it('should contain all mismatches', () => {
+						mock(5);
+						mock(6, 2);
+						mock(7);
 
-				__.assertThat(description.get(), __.equalTo('call 0: item 0: was a Number (<5>)\ncall 1: size was <2>\nfor [<6>, <2>]\nnot matched:\n\tcall 2: [<7>]'));
-			});
+						sut.describeMismatch(mock, description);
 
-			it('should contain surplus items', () => {
-				const mock = sinon.stub();
-				mock('expected');
-				mock(7);
-				mock('surplus 1');
-				mock(100);
+						__.assertThat(description.get(), __.equalTo('call 0: item 0: was a Number (<5>)\ncall 1: size was <2>\nfor [<6>, <2>]\nnot matched:\n\tcall 2: [<7>]'));
+					});
 
-				sut.describeMismatch(mock, description);
+					it('should contain surplus items', () => {
+						mock('expected');
+						mock(7);
+						mock('surplus 1');
+						mock(100);
 
-				__.assertThat(description.get(), __.equalTo('not matched:\n\tcall 2: ["surplus 1"]\n\tcall 3: [<100>]'));
-			});
+						sut.describeMismatch(mock, description);
 
-			it('should contain unmatched matchers', () => {
-				const mock = sinon.stub();
+						__.assertThat(description.get(), __.equalTo('not matched:\n\tcall 2: ["surplus 1"]\n\tcall 3: [<100>]'));
+					});
 
-				sut.describeMismatch(mock, description);
+					it('should contain unmatched matchers', () => {
+						sut.describeMismatch(mock, description);
 
-				__.assertThat(description.get(), __.equalTo('missing:\n\tcall 0: [a string containing "expected"]\n\tcall 1: a collection or string with size <1>'));
+						__.assertThat(description.get(), __.equalTo('missing:\n\tcall 0: [a string containing "expected"]\n\tcall 1: a collection or string with size <1>'));
+					});
+				});
 			});
 	
 			it('should fit for non-function', () => {
