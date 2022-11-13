@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "types": "./@types/index.d.ts",
   "scripts": {
-    "testTS": "tsc --lib es2015 --skipLibCheck ./@types/*.ts",
+    "testTS": "tsc --lib es2015 --skipLibCheck --noEmit true ./@types/*.ts",
     "testJS": "mocha \"src/**/*.spec.js\"",
     "test": "yarn testJS && yarn testTS",
     "lint": "eslint ."
