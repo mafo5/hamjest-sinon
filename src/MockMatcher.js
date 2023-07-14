@@ -5,7 +5,7 @@ const create  = require('lodash/create');
 const size = require('lodash/size');
 const isArray = require('lodash/isArray');
 const {TypeSafeMatcher} = require('hamjest');
-const getType = require('hamjest/lib/utils/getType');
+const getType = require('./getType');
 const {isObject} = require('lodash');
 
 function MockMatcher() {

@@ -5,7 +5,7 @@ const create  = require('lodash/create');
 const map = require('lodash/map');
 const every = require('lodash/every');
 const {asMatcher} = require('hamjest');
-const promiseAgnostic = require('hamjest/lib/matchers/promiseAgnostic');
+const promiseAgnostic = require('./promiseAgnostic');
 const MockMatcher = require('./MockMatcher');
 
 function asSelfDescribing(value) {
