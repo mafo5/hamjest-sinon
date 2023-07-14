@@ -1,6 +1,6 @@
 {
   "name": "hamjest-sinon",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Sinon Matcher for Hamjest",
   "main": "src/index.js",
   "types": "./@types/index.d.ts",
