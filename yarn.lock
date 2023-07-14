@@ -1396,13 +1396,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bluebird@npm:^3.3.4":
-  version: 3.7.2
-  resolution: "bluebird@npm:3.7.2"
-  checksum: 869417503c722e7dc54ca46715f70e15f4d9c602a423a02c825570862d12935be59ed9c7ba34a9b31f186c017c23cac6b54e35446f8353059c101da73eac22ef
-  languageName: node
-  linkType: hard
-
 "brace-expansion@npm:^1.1.7":
   version: 1.1.11
   resolution: "brace-expansion@npm:1.1.11"
@@ -2456,7 +2449,7 @@ __metadata:
     "@typescript-eslint/parser": ^5.20.0
     eslint: ^8.13.0
     eslint-config-leanbyte: ^2.0.0
-    hamjest: ^3.7.3
+    hamjest: ^4.0.1
     jest: ^29.3.1
     jest-mock: ^29.3.1
     lodash: ^4.17.21
@@ -2464,20 +2457,19 @@ __metadata:
     sinon: ^13.0.2
     typescript: ^4.6.3
   peerDependencies:
-    hamjest: ^3.3.1
+    hamjest: ^4.0.1
     lodash: ^4.17.15
     sinon: ">=9.0.1 <14.0.0"
   languageName: unknown
   linkType: soft
 
-"hamjest@npm:^3.7.3":
-  version: 3.7.3
-  resolution: "hamjest@npm:3.7.3"
+"hamjest@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "hamjest@npm:4.0.1"
   dependencies:
     assertion-error: ^1.1.0
-    bluebird: ^3.3.4
     lodash: ^4.17.15
-  checksum: bc5f254046190cc25c5f05cb2a11202f0d1f83275a2c0f21411a9c0709f8a8733232062d5fdc1fa7808ca94416b95c743bad3ebe5f2b94da4a3becb9d708d7da
+  checksum: d883db1794a3a7160aa80de928d32e68b53dfe2d84137f7040fd6847a0bbca23e15ba17ca777bd40983b93de2b29fbcad70b8ec2fc94f9db4f9e4e8d91918599
   languageName: node
   linkType: hard
 
