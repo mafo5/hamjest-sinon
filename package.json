@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "types": "./@types/index.d.ts",
   "scripts": {
+    "setup": "corepack enable && corepack prepare yarn@stable --activate && yarn set version stable",
     "testTS": "tsc --lib es2015 --skipLibCheck --noEmit true ./@types/*.ts",
     "testMochaJS": "mocha \"src/**/*.spec.js\"",
     "testJestJS": "jest src",
