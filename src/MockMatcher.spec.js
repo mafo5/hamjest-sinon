@@ -2,7 +2,7 @@
 
 const create = require('lodash/create');
 const __ = require('hamjest');
-const jest = require('jest-mock');
+const jestMock = require('jest-mock');
 const sinon = require('sinon');
 
 const MockMatcher = require('./MockMatcher');
@@ -23,7 +23,7 @@ describe('MockMatcher', () => {
 			{mockCreator: () => sinon.stub(), mockType: 'sinon stub'},
 			{mockCreator: () => sinon.spy(), mockType: 'sinon spy'},
 			{mockCreator: () => sinon.fake(), mockType: 'sinon fake'},
-			{mockCreator: () => jest.fn(), mockType: 'Jest Mock'},
+			{mockCreator: () => jestMock.fn(), mockType: 'Jest Mock'},
 		].forEach(({mockCreator, mockType}) => {
 			it(`should return true for ${mockType}`, () => {
 				const mock = mockCreator();
@@ -79,7 +79,7 @@ describe('MockMatcher', () => {
 			{mockCreator: () => sinon.stub(), mockType: 'sinon stub'},
 			{mockCreator: () => sinon.spy(), mockType: 'sinon spy'},
 			{mockCreator: () => sinon.fake(), mockType: 'sinon fake'},
-			{mockCreator: () => jest.fn(), mockType: 'Jest Mock'},
+			{mockCreator: () => jestMock.fn(), mockType: 'Jest Mock'},
 		].forEach(({mockCreator, mockType}) => {
 			it(`should return the count of the calls for ${mockType}`, () => {
 				const mock = mockCreator();

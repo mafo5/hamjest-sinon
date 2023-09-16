@@ -11,8 +11,8 @@ function extendHamjest(hamjest) {
 	extend(hamjest, {MockMatcher, wasCalled, wasCalledWith, wasCalledInOrder});
 }
 
-// const __ = require('hamjest');
-// extendHamjest(__);
+const __ = require('hamjest');
+extendHamjest(__);
 
 const SinonMatcher = MockMatcher;
 

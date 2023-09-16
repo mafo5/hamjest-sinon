@@ -6,8 +6,9 @@
   "types": "./@types/index.d.ts",
   "scripts": {
     "testTS": "tsc --lib es2015 --skipLibCheck --noEmit true ./@types/*.ts",
-    "testJS": "mocha \"src/**/*.spec.js\"",
-    "test": "yarn testJS && yarn testTS",
+    "testMochaJS": "mocha \"src/**/*.spec.js\"",
+    "testJestJS": "jest src",
+    "test": "yarn testMochaJS && yarn testJestJS && yarn testTS",
     "lint": "eslint ."
   },
   "repository": {
@@ -50,5 +51,6 @@
   },
   "engines": {
     "node": ">=16.0.0"
-  }
+  },
+  "packageManager": "yarn@3.6.1"
 }

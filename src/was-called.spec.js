@@ -1,7 +1,7 @@
 'use strict';
 
 const __ = require('hamjest');
-const jest = require('jest-mock');
+const jestMock = require('jest-mock');
 const sinon = require('sinon');
 
 const wasCalled = require('./was-called');
@@ -17,7 +17,7 @@ describe('wasCalled', () => {
 			{mockCreator: () => sinon.stub(), mockType: 'sinon stub'},
 			{mockCreator: () => sinon.spy(), mockType: 'sinon spy'},
 			{mockCreator: () => sinon.fake(), mockType: 'sinon fake'},
-			{mockCreator: () => jest.fn(), mockType: 'Jest Mock'},
+			{mockCreator: () => jestMock.fn(), mockType: 'Jest Mock'},
 		].forEach(({mockCreator, mockType}) => {
 			it(`should match ${mockType}`, () => {
 				const mock = mockCreator();
@@ -75,7 +75,7 @@ describe('wasCalled', () => {
 				{mockCreator: () => sinon.stub(), mockType: 'sinon stub'},
 				{mockCreator: () => sinon.spy(), mockType: 'sinon spy'},
 				{mockCreator: () => sinon.fake(), mockType: 'sinon fake'},
-				{mockCreator: () => jest.fn(), mockType: 'Jest Mock'},
+				{mockCreator: () => jestMock.fn(), mockType: 'Jest Mock'},
 			].forEach(({mockCreator, mockType}) => {
 				it(`should contain mismatched value and size for ${mockType}`, () => {
 					sut.describeMismatch(mockCreator(), description);
@@ -108,7 +108,7 @@ describe('wasCalled', () => {
 			{mockCreator: () => sinon.stub(), mockType: 'sinon stub'},
 			{mockCreator: () => sinon.spy(), mockType: 'sinon spy'},
 			{mockCreator: () => sinon.fake(), mockType: 'sinon fake'},
-			{mockCreator: () => jest.fn(), mockType: 'Jest Mock'},
+			{mockCreator: () => jestMock.fn(), mockType: 'Jest Mock'},
 		].forEach(({mockCreator, mockType}) => {
 			it(`should match ${mockType}`, () => {
 				const mock = mockCreator();

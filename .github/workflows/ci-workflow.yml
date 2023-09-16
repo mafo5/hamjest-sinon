@@ -12,15 +12,38 @@ jobs:
         node-version: [16.x, 18.x, 20.x]
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
+
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-    - name: install, lint, and test
+
+    - name: Setup yarn
       run: |
-        yarn install
-        yarn lint
-        yarn test
+        corepack --version
+        yarn setup
+        yarn --version
+      
+    # Yarn dependencies cannot be cached until yarn is installed
+    # WORKAROUND: https://github.com/actions/setup-node/issues/531
+    - name: Extract cached dependencies
+      uses: actions/setup-node@v3
+      with:
+        cache: yarn
+
+    - name: Install dependencies
+      run: corepack yarn install --immutable
+      env:
+        CI: true
+
+    - name: lint
+      run: yarn lint
+      env:
+        CI: true
+
+    - name: test
+      run: yarn test
       env:
         CI: true

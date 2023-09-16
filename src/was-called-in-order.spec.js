@@ -1,7 +1,7 @@
 'use strict';
 
 const __ = require('hamjest');
-const jest = require('jest-mock');
+const jestMock = require('jest-mock');
 const sinon = require('sinon');
 
 const {wasCalledInOrder} = require('./was-called-in-order');
@@ -17,7 +17,7 @@ describe('IsFunctionWasCalledInOrder', () => {
 			{mockCreator: () => sinon.stub(), mockType: 'sinon stub'},
 			{mockCreator: () => sinon.spy(), mockType: 'sinon spy'},
 			{mockCreator: () => sinon.fake(), mockType: 'sinon fake'},
-			{mockCreator: () => jest.fn(), mockType: 'Jest Mock'},
+			{mockCreator: () => jestMock.fn(), mockType: 'Jest Mock'},
 		].forEach(({mockCreator, mockType}) => {
 			describe(`for ${mockType}`, () => {
 				let mock;
@@ -71,7 +71,7 @@ describe('IsFunctionWasCalledInOrder', () => {
 				{mockCreator: () => sinon.stub(), mockType: 'sinon stub'},
 				{mockCreator: () => sinon.spy(), mockType: 'sinon spy'},
 				{mockCreator: () => sinon.fake(), mockType: 'sinon fake'},
-				{mockCreator: () => jest.fn(), mockType: 'Jest Mock'},
+				{mockCreator: () => jestMock.fn(), mockType: 'Jest Mock'},
 			].forEach(({mockCreator, mockType}) => {
 				describe(`for ${mockType}`, () => {
 					let mock;
